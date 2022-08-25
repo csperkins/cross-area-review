@@ -14,6 +14,7 @@ types-six = "*"
 types-requests = "*"
 
 [packages]
+ietfdata = "*"
 requests = "*"
 
 [requires]
