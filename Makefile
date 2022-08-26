@@ -42,12 +42,11 @@ MAKEFLAGS += --output-sync --warn-undefined-variables --no-builtin-rules --no-bu
 # =================================================================================================
 # Generic Rules
 
-all: check-make data/rfc_list.json
+all: check-make data/raw/rfc_list.json
 
 # This Makefile requires GNU make:
 check-make:
 	$(if $(findstring GNU Make,$(shell $(MAKE) --version)),,$(error Not GNU make))
-
 
 # =================================================================================================
 # Rules to fetch data
@@ -55,15 +54,19 @@ check-make:
 data:
 	mkdir $@
 
-data/rfc_list.json: scripts/fetch_rfc_list.py | data
-	python $<
+data/raw: | data
+	mkdir $@
 
+data/raw/rfc_list.json: scripts/fetch_rfc_list.py | data/raw
+	python $<
 
 # =================================================================================================
 # Rules to cleanup
 
 clean:
-	-rm -f  data/rfc_list.json
+	-rm -f  Makefile.rfc_list
+	-rm -f  data/raw/rfc_list.json
+	-rm -fr data/raw
 	-rm -fr data
 
 
